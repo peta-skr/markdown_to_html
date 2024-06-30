@@ -24,3 +24,19 @@ test("convert header5", () => {
 test("convert header6", () => {
   expect(convert("###### header")).toBe("<h6>header</h6>");
 });
+
+test("convert multiple headeres", () => {
+  expect(convert("# header\r\n## header2")).toBe(
+    "<h1>header</h1>\r\n<h2>header2</h2>"
+  );
+});
+
+test("convert blockquote", () => {
+  expect(convert("> 引用")).toBe("<blockquote>引用</blockquote>");
+});
+
+test("convert multiple blockquotes", () => {
+  expect(convert("> 引用\r\n>> 入れ子")).toBe(
+    "<blockquote>引用<blockquote>入れ子</blockquote></blockquote>"
+  );
+});
