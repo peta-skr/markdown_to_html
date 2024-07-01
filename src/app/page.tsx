@@ -1,43 +1,9 @@
 "use client";
 
-import { MouseEventHandler, SetStateAction, useEffect, useState } from "react";
-import { marked } from "marked";
-import { convert } from "@/utils/markdown_convert";
+import { useMarkdown } from "@/hooks/MarkdownHooks";
 
 export default function Home() {
-  const [mdText, setMdText] = useState(localStorage.getItem("markdown") || ""); //markdown
-  const [htmlText, setHtmlText] = useState(localStorage.getItem("html") || ""); //markdown
-
-  useEffect(() => {
-    localStorage.setItem("markdown", mdText);
-    localStorage.setItem("html", htmlText);
-  }, [mdText, htmlText]);
-
-  useEffect(() => {
-    Convert();
-  }, [mdText]);
-
-  function Convert(): void {
-    let text: SetStateAction<string> = marked.parse(
-      mdText
-    ) as SetStateAction<string>;
-    setHtmlText(text);
-  }
-
-  function copy(): void {
-    navigator.clipboard.writeText(htmlText).then(
-      () => {
-        console.log("success");
-      },
-      () => {
-        console.log("fail");
-      }
-    );
-  }
-
-  function change(text: string) {
-    setMdText(text);
-  }
+  const { mdText, htmlText, change, copy } = useMarkdown();
 
   return (
     <main>
@@ -56,7 +22,8 @@ export default function Home() {
           name="html"
           id=""
           value={htmlText}
-          defaultValue={htmlText}
+          // defaultValue={htmlText}
+          readOnly
         ></textarea>
       </div>
     </main>
